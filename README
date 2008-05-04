@@ -2,3 +2,5 @@ This is a GEdit plugin for formatting code.
 currently it supports only ruby code, but I'll add at least support for HTML (I do not like tidy)
 
 To install just copy all files to the directory ~/.gnome2/gedit/plugins
+
+To format a ruby file, open the buffer and press CTRL+ALT+F or use the command "Format Code" from the tools menu.

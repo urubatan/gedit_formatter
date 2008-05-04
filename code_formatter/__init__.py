@@ -32,44 +32,6 @@ ui_str = """<ui>
   </menubar>
 </ui>
 """
-tabSize = 2
-tabStr = " "
-
-indentExp = [
-   "^module\b",
-   "(=\s*|^)if\b",
-   "(=\s*|^)until\b",
-   "(=\s*|^)for\b",
-   "(=\s*|^)unless\b",
-   "(=\s*|^)while\b",
-   "(=\s*|^)begin\b",
-   "(=\s*|^)case\b",
-   "\bthen\b",
-   "^class\b",
-   "^rescue\b",
-   "^def\b",
-   "\bdo\b",
-   "^else\b",
-   "^elsif\b",
-   "^ensure\b",
-   "\bwhen\b",
-   "\{[^\}]*$",
-   "\[[^\]]*$"
-]
-
-# outdent regexp tests
-
-outdentExp = [
-   "^rescue\b",
-   "^ensure\b",
-   "^elsif\b",
-   "^end\b",
-   "^else\b",
-   "\bwhen\b",
-   "^[^\{]*\}",
-   "^[^\[]*\]"
-]
-
 
 class CodeFormatterPlugin(gedit.Plugin):
     def __init__(self):
@@ -110,10 +72,9 @@ class CodeFormatterWindowHelper:
         # Get the GtkUIManager
         manager = self._window.get_ui_manager()
 
-        # Create a new action group
         self._action_group = gtk.ActionGroup("CodeFormatterPluginActions")
-        self._action_group.add_actions([("FormatCode", None, _("Format Code"),
-                                         None, _("Format the Code"),
+        self._action_group.add_actions([("FormatCode", gtk.STOCK_SELECT_COLOR, _("Format Code"),
+                                         '<Control><Alt>f', _("Format the Code"),
                                          self.on_format_code_activate)])
 
         # Insert the action group
