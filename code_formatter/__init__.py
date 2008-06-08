@@ -21,7 +21,11 @@ import os
 import subprocess
 
 
-
+language_formatters = {
+  "ruby":["ruby",os.path.join(os.path.dirname(__file__), "rubybeautifier.rb")],
+#  "xml":["xsltproc", os.path.join(os.path.dirname(__file__), "indent.xsl")],
+  "erb":["ruby",os.path.join(os.path.dirname(__file__), "erbbeautifier.rb")]
+}
 ui_str = """<ui>
   <menubar name="MenuBar">
     <menu name="ToolsMenu" action="Tools">
@@ -104,10 +108,15 @@ class CodeFormatterWindowHelper:
         doc = self._window.get_active_document()
         if not doc:
             return
-        formatter_script = os.path.join(os.path.dirname(__file__), "rubybeautifier.rb")
+        lang = doc.get_language() 
+        if lang is None:
+            return
+        formatter_script = language_formatters[lang.get_id()]
+        if formatter_script is None:
+            return
         start, end = doc.get_bounds()
         txt = doc.get_text(start,end)
-        proc = subprocess.Popen(["ruby",formatter_script], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        proc = subprocess.Popen(formatter_script, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         proc.stdin.write(txt)
         proc.stdin.close()
         out = proc.stdout.read()
